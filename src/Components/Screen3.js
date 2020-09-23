@@ -3,15 +3,13 @@ import { Card, Button, Form, Alert } from 'react-bootstrap';
 import {Col } from 'react-bootstrap';
 import { getCountries, getCountryCallingCode } from 'react-phone-number-input/input'
 import en from 'react-phone-number-input/locale/en.json'
-import Popup from 'reactjs-popup';
-import 'reactjs-popup/dist/index.css';
 
 
 class create extends Component {
 
-  constructor(props)
+  constructor(porps)
   {
-    super(props);
+    super(porps);
     this.state={
       errors:{},
       firstName:"",
@@ -23,9 +21,7 @@ class create extends Component {
       msg:"",
       error:"",
       number: "",
-      comment_text:"",
-      country:"",
-      countrycode:""
+      comment_text:""
 
     }
    
@@ -34,7 +30,7 @@ class create extends Component {
   createaccount=(e)=>
   {
     e.preventDefault()
-    this.setState({msg:"",error:""}, { showPopup: false })
+    this.setState({msg:"",error:""})
     const data={
       "firstName":this.state.firstName,
       "lastName":this.state.lastName,
@@ -43,19 +39,11 @@ class create extends Component {
       "type":this.state.type,
       "gender":this.state.gender,
       "number":this.state.number,
-      "comment_text":this.state.comment_text,
-      "country":this.state.country,
-      "countrycode":this.state.countrycode
+      "comment_text":this.state.comment_text
 
     }
   }
-  togglePopup() {
-    
-    this.setState({
-      showPopup: !this.state.showPopup
-      
-    });
-  }
+
 render() {
   return (
    
@@ -109,7 +97,18 @@ render() {
 
               <Form.Group>
                 <Form.Label></Form.Label>
-                
+                <select
+  value={country}
+  onChange={event => setCountry(event.target.value || undefined)}>
+  <option value="">
+    {en['ZZ']}
+  </option>
+  {getCountries().map((country) => (
+    <option key={country} value={country}>
+      {en[country]} +{getCountryCallingCode(country)}
+    </option>
+  ))}
+</select>
                 <Form.Control
                  type="number"
                  name="number"
@@ -126,7 +125,7 @@ render() {
                 
              
 
-                <Form.Row>
+                
 
                 <Form.Group as={Col}>
                   <Form.Label></Form.Label>
@@ -135,16 +134,10 @@ render() {
                    value={this.state.usertype}
                    onChange={(e) => {this.setState({type: e.target.value})}}>
                     <option>Operational Companies</option>
-                    <option>Toyota</option>
-                    <option>BMW</option>
+                    <option>lawyer</option>
+                    <option>reviewer</option>
                   </Form.Control>
                 </Form.Group>
-                <Popup trigger={<button> Info</button>} position="right ">
-    <div>you could select/ add your company</div>
-  
-  </Popup>
-  </Form.Row>
-               <Form.Row>
                 <Form.Group as={Col}>
                   <Form.Label></Form.Label>
                   <Form.Control 
@@ -152,16 +145,11 @@ render() {
                    value={this.state.usertype}
                    onChange={(e) => {this.setState({type: e.target.value})}}>
                     <option>Company Name</option>
-                    <option>Bavaria</option>
-                    <option>Catcher</option>
-                    
+                    <option>lawyer</option>
+                    <option>reviewer</option>
                   </Form.Control>
                 </Form.Group>
-                <Popup trigger={<button> popup</button>} position="right ">
-    <div>you could select/ add your company</div>
-    
-  </Popup>
-  </Form.Row>
+               
             <Form.Group as={Col}>
                   <Form.Label></Form.Label>
                   <Form.Control
@@ -184,9 +172,8 @@ render() {
                  />
               </Form.Group> 
 
-              <Button variant="primary" type="create" onClick={this.togglePopup.bind(this)}>
+              <Button variant="primary" type="create" onClick={"/"}>
                 Request an appointment
-                
               </Button>
              </Form>
 
